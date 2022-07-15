@@ -1,0 +1,11 @@
+/*
+    Just a testbed/example Node Lifecycle script
+*/
+
+def OnUpdate(float delta){
+    print("On Update "+delta.to_string());
+}
+
+def OnDraw(){
+    print("On Draw");
+}

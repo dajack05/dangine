@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="15">
+ <editorsettings>
+  <export target="testmap2.dum" format="dumdum"/>
+ </editorsettings>
+ <tileset firstgid="1" name="tileset_basic_terrain" tilewidth="16" tileheight="16" tilecount="528" columns="12">
+  <image source="../image/tileset_basic_terrain.png" width="192" height="704"/>
+ </tileset>
+ <tileset firstgid="529" name="tileset_other" tilewidth="16" tileheight="16" tilecount="736" columns="23">
+  <image source="../image/tileset_other.png" width="368" height="512"/>
+ </tileset>
+ <layer id="2" name="BG0" width="10" height="10">
+  <data encoding="csv">
+246,247,247,247,247,247,247,247,247,248,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+258,259,259,259,259,259,259,259,259,260,
+270,271,271,271,271,271,271,271,271,272
+</data>
+ </layer>
+ <objectgroup id="4" name="Collision">
+  <object id="1" x="64" y="24" width="64" height="40"/>
+  <object id="2" x="-16" y="7" width="16" height="144"/>
+  <object id="3" x="160" y="7" width="16" height="144"/>
+  <object id="4" x="-16" y="-9" width="192" height="16"/>
+  <object id="5" x="-16" y="151" width="192" height="16"/>
+  <object id="7" x="0" y="7" width="16" height="16"/>
+  <object id="13" x="128" y="48" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="14" x="128" y="32" width="16" height="24"/>
+ </objectgroup>
+ <layer id="1" name="BG1" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,
+0,145,146,147,0,0,0,0,249,0,
+0,157,182,159,0,206,0,0,261,0,
+0,157,109,171,0,0,0,0,273,0,
+0,157,159,0,0,0,0,206,0,0,
+0,157,133,146,147,0,0,0,0,0,
+0,169,170,111,159,0,145,146,147,0,
+0,0,0,157,133,134,135,195,159,0,
+0,0,0,169,170,170,170,170,171,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="FG0" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,782,783,784,785,0,0,
+0,0,0,0,805,806,807,808,0,0,
+0,0,0,0,828,829,830,831,0,0,
+0,0,0,0,851,852,853,854,0,0,
+0,0,0,0,874,875,876,877,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

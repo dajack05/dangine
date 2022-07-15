@@ -1,0 +1,146 @@
+global BOARD_WIDTH = 10;
+global BOARD_HEIGHT = 20;
+
+global PIECE_LINE = 0;
+global PIECE_TEE = 1;
+global PIECE_SQUARE = 2;
+global PIECE_S = 3;
+global PIECE_Z = 4;
+global PIECE_L = 5;
+global PIECE_J = 6;
+global PIECE_COUNT = 7;
+
+global TOP = 0;
+global RIGHT = 1;
+global BOTTOM = 2;
+global LEFT = 3;
+
+global PieceMaps = [
+    [[0, 2],    [0, 1],     [0, 0],     [0, -1] ],  // LINE
+    [[-1, 0],   [0, 0],     [1, 0],     [0, -1] ],  // TEE
+    [[0, 0],    [1, 0],     [0, -1],    [1, -1] ],  // SQUARE
+    [[0, 0],    [0, 1],     [-1, 0],    [-1, -1]],  // S
+    [[0, 0],    [1, 0],     [1, -1],    [0, 1]  ],  // Z
+    [[0, 0],    [0, -1],    [0, -2],    [1, 0]  ],  // L
+    [[0, 0],    [0, -1],    [0, -2],    [-1, 0] ]   // J
+];
+
+global t = 0.0;
+
+class Piece{
+    attr node;
+    attr sprite;
+    attr mPiece;
+
+    def Piece() {
+        System.randSeed();
+        this.node = Node();
+        this.sprite = Sprite();
+        this.mPiece = PIECE_TEE;
+        
+        this.reSeed();
+
+        this.sprite.getTexture().load("tetris_parts");
+        this.sprite.imageScale = 8;
+        this.sprite.uv = Vec4((System.rand() % 4) * 0.25, 0.0, 0.25, 1.0);
+    }
+
+    def update(double delta){
+        t += delta;
+    }
+
+    def check(Board board){
+        var points = this.getPoints();
+        for (var i=0; i<4; ++i) {
+            var point = Vec2(points[i][0], points[i][1]) + this.node.transform.position * Vec2(1, -1);
+            if(board.at(round(point.x / 8), round(point.y / 8)) >= 0){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    def draw(Renderer renderer) {
+        var points = this.getPoints();
+        for(var i=0; i<4; ++i) {
+            var part_pos = points[i];
+            this.sprite.globalTransform.position = Vec2(
+                part_pos[0] * this.sprite.imageScale, 
+                part_pos[1] * this.sprite.imageScale
+            );
+            this.sprite.globalTransform.position = this.sprite.globalTransform.position + this.node.globalTransform.position;
+            this.sprite.draw(renderer);
+
+            renderer.drawRect(this.sprite.globalTransform.position - Vec2(4), this.sprite.globalTransform.position - Vec2(4) + Vec2(8), Color(1,0,0));
+        }
+    }
+
+    def reSeed() {
+        var old_value = this.mPiece;
+
+        for (var i = 0; i < System.rand() % 10; ++i) {
+            System.rand();
+        }
+
+        while (this.mPiece == old_value) {
+            this.mPiece = System.rand() % PIECE_COUNT;
+        }
+
+        this.sprite.uv = Vec4((System.rand() % 4) * 0.25F, 0.0F, 0.25F, 1.0F);
+    }
+
+    def place(board) {
+        var points = this.getPoints();
+        for (var i=0; i<4; ++i) {
+            var point = Vec2(points[i][0], -points[i][1]);
+            var _point = (point * Vec2(1, 1)) + (this.node.transform.position / Vec2(this.sprite.imageScale)) * Vec2(1, -1);
+            if (_point.x >= 0 && _point.x < BOARD_WIDTH && _point.y >= 0 && _point.y < BOARD_HEIGHT) {
+                board.set(round(_point.x), round(_point.y), round(this.sprite.uv.x * 4));
+            }
+        }
+    }
+
+    // def getBounds() {
+    //     var max = [0, 0, 0, 0];
+
+    //     var points = getPoints();
+    //     for (var i=0; i<points.size(); i++) {
+    //         var point = points[i];
+
+    //         if (point.x < max[LEFT]) {
+    //             max[LEFT] = point.x;
+    //         } else if (point.x > max[RIGHT]) {
+    //             max[RIGHT] = point.x;
+    //         }
+
+    //         if (point.y < max[BOTTOM]) {
+    //             max[BOTTOM] = point.y;
+    //         } else if (point.y > max[TOP]) {
+    //             max[TOP] = point.y;
+    //         }
+    //     }
+
+    //     max[TOP] = abs(max[TOP]);
+    //     max[BOTTOM] = abs(max[BOTTOM]);
+    //     max[LEFT] = abs(max[LEFT]);
+    //     max[RIGHT] = abs(max[RIGHT]);
+
+    //     return max;
+    // }
+
+    def getPoints() {
+        var data = [[],[],[],[]];
+        for (var i = 0; i < 4; ++i) {
+            var map = PieceMaps[this.mPiece][i]
+
+            var a = radians(this.node.globalTransform.angle);
+            var result = [0,0];
+            result[0] = round(map[0] * cos(-a)) - round(map[1] * sin(-a));
+            result[1] = round(map[1] * cos(-a)) + round(map[0] * sin(-a));
+
+            data[i] = result;
+        }
+
+        return data;
+    }
+}

@@ -1,0 +1,23 @@
+/*
+    Player controller to test scripting
+*/
+import("Input");
+
+global parent;
+
+def OnUpdate(float delta){
+    if(parent.is_var_null()){
+        parent = node.getParent();
+    }
+    
+    print(parent.transform.position.x);
+
+    if(Input.IsKeyDown(KEY_R)){
+        parent.transform.position.x = parent.transform.position.x + 1.0;
+        print(parent.transform.position.x);
+    }
+}
+
+def OnDraw(){
+
+}

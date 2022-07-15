@@ -1,0 +1,16 @@
+print("Hello World");
+
+var name = "Daniel";
+print("My name is " + name);
+
+var a = 2;
+var b = 7;
+print(a.to_string()+"+"+b.to_string()+"="+(a+b).to_string());
+
+global counter = 0;
+
+def testFunction(){
+    counter = counter + 1;
+    print("This is a test function!");
+    print("I have run " + counter.to_string() + " times.");
+}

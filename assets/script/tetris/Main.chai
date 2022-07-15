@@ -1,0 +1,64 @@
+import("System");
+import("Input");
+
+use("assets/script/tetris/Piece.chai");
+use("assets/script/tetris/Board.chai");
+
+global t = 0.0;
+
+global board = Board();
+
+global piece = Piece();
+
+root.addChild(piece.node);
+
+def OnUpdate(double delta){
+    
+    var old_pos = piece.node.transform.position;
+    if(Input.IsKeyJustDown(KEY_RIGHT)){
+        piece.node.transform.position.x += 8;
+    }
+    if(Input.IsKeyJustDown(KEY_LEFT)){
+        piece.node.transform.position.x -= 8;
+    }
+
+    if(piece.check(board)){
+        piece.node.transform.position = old_pos;
+    }
+
+    old_pos = piece.node.transform.position;
+    if(Input.IsKeyJustDown(KEY_DOWN)){
+        piece.node.transform.position.y -= 8;
+    }
+    if(Input.IsKeyJustDown(KEY_UP)){
+        piece.node.transform.position.y += 8;
+    }
+
+    if(piece.check(board)){
+        piece.node.transform.position = old_pos;
+    }
+
+    if(Input.IsKeyJustDown(KEY_Z)){
+        piece.node.transform.angle -= 90;
+    }
+    if(Input.IsKeyJustDown(KEY_X)){
+        piece.node.transform.angle += 90;
+    }
+
+    if(Input.IsKeyJustDown(KEY_SPACE)){
+        piece.reSeed();
+    }
+
+    if(Input.IsKeyJustDown(KEY_Q)){
+        piece.place(board);
+    }
+
+    piece.update(delta);
+
+    board.checkLines();
+}
+
+def OnDraw(Renderer renderer){
+    board.draw(renderer);
+    piece.draw(renderer);
+}

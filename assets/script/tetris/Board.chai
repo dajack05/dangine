@@ -1,0 +1,64 @@
+global BOARD_WIDTH = 10;
+global BOARD_HEIGHT = 20;
+
+class Board {
+  attr cells;
+  attr sprite;
+
+  def Board(){
+    this.cells = [];
+    for (var i = 0; i < BOARD_HEIGHT * BOARD_WIDTH; ++i) {
+      this.cells.push_back(-1);
+    }
+
+    this.sprite = Sprite();
+    this.sprite.getTexture().load("tetris_parts");
+    this.sprite.imageScale = 8;
+  }
+
+  def at(x, y) {
+    if (x < 0 || x > BOARD_WIDTH - 1 || y < 0 || y > BOARD_HEIGHT - 1) {
+      return -1;
+    }
+    return this.cells[x + y * BOARD_WIDTH];
+  }
+
+  def set(x, y, value) {
+    this.cells[x + y * BOARD_WIDTH] = value;
+  }
+
+  def draw(renderer){
+    for(var y=0; y<BOARD_HEIGHT; ++y){
+        for(var x=0; x<BOARD_WIDTH; ++x){
+            var cell = this.at(x,y);
+            if(cell >= 0){
+                this.sprite.globalTransform.position = Vec2(x * 8, -y * 8);
+                this.sprite.uv = Vec4(cell * 0.25, 0.0, 0.25, 1.0);
+                this.sprite.draw(renderer);
+            }
+        }
+    }
+  }
+
+  def checkLines() {
+    for(var y = 0; y < BOARD_HEIGHT; ++y) {
+
+      var lineIsFilled = true;
+      for (var x = 0; x < BOARD_WIDTH; ++x) {
+        if (this.at(x, y) < 0) {
+          // If there are ANY -1's our line is not done
+          lineIsFilled = false;
+          break;
+        }
+      }
+
+      if (lineIsFilled) {
+        for (var x = 0; x < BOARD_WIDTH; ++x) {
+          for (var _y = 0; _y < y; ++_y) {
+            this.set(x, y - _y, this.at(x, y - _y - 1));
+          }
+        }
+      }
+    }
+  }
+}
