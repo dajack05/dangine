@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
   ScriptManager::setRootNode(root);
 
   Script main_script;
-  main_script.loadScript("Tetris/Main");
+  main_script.loadScript("tetris/Main");
   root.addChild(&main_script);
 
   while (!renderer.didWindowClose() && !Input::IsKeyDown(KEY_ESCAPE)) {

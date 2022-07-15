@@ -18,6 +18,10 @@ add_subdirectory(libs/glfw)
 
 include_directories(libs/glm libs/glad/include include libs/picopng/ libs/chaiscript)
 
+if(MSVC)
+    add_compile_options(/bigobj)
+endif()
+
 set(SRC_GLAD libs/glad/src/glad.c)
 file(GLOB SRC_ENGINE
     src/Engine/*.cpp
